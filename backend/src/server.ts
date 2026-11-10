@@ -16,7 +16,7 @@ const allowedOrigins = [
 ].map((origin) => origin.trim().replace(/\/+$/, "")).filter(Boolean);
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: '*',
   methods: ["GET", "POST", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
