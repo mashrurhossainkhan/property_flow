@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from "react";
+import { API_BASE_URL } from "@/lib/api";
 
 type AgentResponse = {
   success: boolean;
@@ -48,7 +49,7 @@ export default function AgentPage() {
 
     try {
       const response = await fetch(
-        "http://localhost:4000/api/leads/agent",
+        `${API_BASE_URL}/api/leads/agent`,
         {
           method: "POST",
           headers: {

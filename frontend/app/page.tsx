@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "@/lib/api";
 
 type Contact = { id: string; properties: Record<string, string | null> };
 const columns = [
@@ -21,7 +22,7 @@ export default function Home() {
     const controller = new AbortController();
     async function loadContacts() {
       try {
-        const response = await fetch("http://localhost:4000/api/contacts", { signal: controller.signal });
+        const response = await fetch(`${API_BASE_URL}/api/contacts`, { signal: controller.signal });
         if (!response.ok) throw new Error("Unable to load contacts");
         const data = await response.json();
         setContacts(data.contacts);
@@ -39,7 +40,7 @@ export default function Home() {
     setSaving((current) => ({ ...current, [id]: true }));
     setReviewErrors((current) => ({ ...current, [id]: "" }));
     try {
-      const response = await fetch(`http://localhost:4000/api/contacts/${encodeURIComponent(id)}/human-review`, {
+      const response = await fetch(`${API_BASE_URL}/api/contacts/${encodeURIComponent(id)}/human-review`, {
         method: "PATCH", signal: AbortSignal.timeout(20000)
       });
       if (!response.ok) throw new Error("Unable to save review. Please try again.");
