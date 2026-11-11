@@ -80,7 +80,12 @@ export async function approveProposal(id: string) {
       ? existing.id
       : (await createHubSpotContact({
           email: proposal.email,
-          fullName: proposal.full_name
+          fullName: proposal.full_name,
+          budget: proposal.budget == null ? null : Number(proposal.budget),
+          location: proposal.location,
+          timeline: proposal.timeline,
+          intent: proposal.intent,
+          summary: proposal.summary
         })).id;
 
     const finalStatus = existing

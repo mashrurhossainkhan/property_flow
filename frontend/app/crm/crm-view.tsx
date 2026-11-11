@@ -6,10 +6,20 @@ import { API_BASE_URL } from "@/lib/api";
 type Contact = { id: string; properties: Record<string, string | null> };
 const columns = [
   ["email", "Email"], ["phone", "Phone"], ["mobilephone", "Mobile"],
+  ["budget", "Budget"], ["location", "Location"], ["timeline", "Timeline"],
+  ["intent", "Intent"], ["summary", "Summary"],
   ["lifecyclestage", "Lifecycle stage"], ["hs_lead_status", "Lead status"],
   ["company", "Company"], ["jobtitle", "Job title"], ["city", "City"],
   ["state", "State"], ["country", "Country"]
 ];
+
+function displayProperty(key: string, value: string | null | undefined) {
+  if (value == null || value.trim() === "") return "—";
+  if (key === "budget" && Number.isFinite(Number(value))) {
+    return new Intl.NumberFormat("en-AU", { style: "currency", currency: "AUD" }).format(Number(value));
+  }
+  return value;
+}
 
 export default function Home() {
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -94,7 +104,7 @@ export default function Home() {
                       </button>
                       {reviewErrors[contact.id] && <p role="alert" className="mt-2 text-red-600">{reviewErrors[contact.id]}</p>}
                     </td>
-                    {columns.map(([key]) => <td key={key} className="min-w-32 p-3">{contact.properties[key] || "—"}</td>)}
+                    {columns.map(([key]) => <td key={key} className={key === "summary" ? "min-w-72 max-w-96 whitespace-normal break-words p-3" : "min-w-32 p-3"}>{displayProperty(key, contact.properties[key])}</td>)}
                     <td className="min-w-80 p-3">
                       <details><summary className="cursor-pointer text-blue-700">Properties</summary>
                         <dl className="mt-3 space-y-2"><div><dt className="font-semibold">Contact ID</dt><dd>{contact.id}</dd></div>

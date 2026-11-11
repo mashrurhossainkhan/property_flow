@@ -8,6 +8,11 @@ export interface HubSpotContact {
     phone?: string | null;
     lifecyclestage?: string | null;
     human_reviewed?: string | null;
+    budget?: string | null;
+    location?: string | null;
+    timeline?: string | null;
+    intent?: string | null;
+    summary?: string | null;
   };
 }
 
@@ -40,7 +45,8 @@ export async function getHubSpotContacts(): Promise<HubSpotContactsResponse> {
       "lifecyclestage", "human_reviewed", "company", "jobtitle",
       "website", "address", "city", "state", "zip", "country",
       "industry", "hs_lead_status", "hubspot_owner_id",
-      "createdate", "lastmodifieddate"
+      "createdate", "lastmodifieddate",
+      "budget", "location", "timeline", "intent", "summary"
     ].join(",")
   );
 
@@ -136,6 +142,11 @@ export async function createHubSpotContact(input: {
   email: string;
   fullName: string | null;
   humanReviewed?: "true" | "false";
+  budget?: number | null;
+  location?: string | null;
+  timeline?: string | null;
+  intent?: string | null;
+  summary?: string | null;
 }) {
   const token = process.env.HUBSPOT_ACCESS_TOKEN;
 
@@ -165,6 +176,11 @@ export async function createHubSpotContact(input: {
       body: JSON.stringify({
         properties: {
           email: input.email,
+          ...(input.budget != null ? { budget: String(input.budget) } : {}),
+          ...(input.location != null ? { location: input.location } : {}),
+          ...(input.timeline != null ? { timeline: input.timeline } : {}),
+          ...(input.intent != null ? { intent: input.intent } : {}),
+          ...(input.summary != null ? { summary: input.summary } : {}),
           ...(input.humanReviewed ? { human_reviewed: input.humanReviewed } : {}),
           ...(firstname ? { firstname } : {}),
           ...(lastname ? { lastname } : {})
