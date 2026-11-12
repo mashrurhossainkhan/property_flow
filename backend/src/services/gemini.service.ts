@@ -4,6 +4,7 @@ import { z } from "zod";
 const LeadSchema = z.object({
   name: z.string().nullable(),
   email: z.string().nullable(),
+  phone: z.string().nullable(),
   budget: z.number().nullable(),
   location: z.string().nullable(),
   timeline: z.string().nullable(),
@@ -22,6 +23,7 @@ const outputSchema = {
   properties: {
     name: { type: ["string", "null"] },
     email: { type: ["string", "null"] },
+    phone: { type: ["string", "null"] },
     budget: { type: ["number", "null"] },
     location: { type: ["string", "null"] },
     timeline: { type: ["string", "null"] },
@@ -32,7 +34,7 @@ const outputSchema = {
     summary: { type: "string" }
   },
   required: [
-    "name", "email", "budget", "location",
+    "name", "email", "phone", "budget", "location",
     "timeline", "intent", "summary"
   ]
 };
@@ -62,7 +64,8 @@ You extract information from property enquiries.
 
 Rules:
 - Return only information supported by the message.
-- Never invent names, emails, budgets, or timelines.
+- Never invent names, emails, phone numbers, budgets, or timelines.
+- Extract an explicitly provided contact phone number as a string, preserving its leading zero or international prefix. Use null when absent.
 - Use null for unknown values.
 - Budget is a numeric amount in AUD when explicitly stated.
 - Determine whether the enquiry is about investment

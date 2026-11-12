@@ -141,6 +141,7 @@ export async function findContactByEmail(email: string) {
 export async function createHubSpotContact(input: {
   email: string;
   fullName: string | null;
+  phone?: string | null;
   humanReviewed?: "true" | "false";
   budget?: number | null;
   location?: string | null;
@@ -176,6 +177,7 @@ export async function createHubSpotContact(input: {
       body: JSON.stringify({
         properties: {
           email: input.email,
+          ...(input.phone != null ? { phone: input.phone } : {}),
           ...(input.budget != null ? { budget: String(input.budget) } : {}),
           ...(input.location != null ? { location: input.location } : {}),
           ...(input.timeline != null ? { timeline: input.timeline } : {}),

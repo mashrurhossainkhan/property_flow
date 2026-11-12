@@ -35,6 +35,7 @@ export async function runLeadAgent(message: string) {
   const contact = existingContact ?? await createHubSpotContact({
     email,
     fullName: lead.name,
+    phone: lead.phone,
     humanReviewed: "false",
     budget: lead.budget,
     location: lead.location,
